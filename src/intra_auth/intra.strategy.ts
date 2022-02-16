@@ -1,26 +1,27 @@
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy, VerifyCallback } from 'passport-google-oauth20';
+import { VerifyCallback } from 'passport-google-oauth20';
 import { config } from 'dotenv';
-
+import {Strategy} from 'passport-42'
 import { Injectable } from '@nestjs/common';
+
+
+// var FortyTwoStrategy = require('passport-42').Strategy;
 
 config();
 
 @Injectable()
-export class GoogleStrategy extends PassportStrategy(Strategy) {
+export class IntraStrategy extends PassportStrategy(Strategy) {
 
   constructor() {
     super({
-      clientID: "904309942627-focg92jee85f51o08oem8kp1oi12me0e.apps.googleusercontent.com",
-      clientSecret: "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",
-      callbackURL: 'http://localhost:3000/google/redirect',
+      clientID: "a0e034c0b73832047e8f6275dcb06b917599cc03566a80f9831061357a3595be",
+      clientSecret: "a16cf57b9b1e6e2d18073aced634c3e41d8b66c7951596ba80f8b4361307e419",
+      callbackURL: 'http://localhost:3000/42/redirect',
       // scope: ['email', 'profile'],
     });
   }
 
   async validate (accessToken: string, refreshToken: string, profile: any, done: VerifyCallback): Promise<any> {
-    console.log('sahbi samir sbe3');
-    
     const { name, emails, photos } = profile
     const user = {
       email: emails[0].value,
@@ -29,6 +30,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy) {
       picture: photos[0].value,
       accessToken
     }
-    done(null, user);
+    return profile;
+    // done(null, user);
   }
 }
